@@ -29,15 +29,17 @@ function makeCardButtons() {
       book.read = true;
       bookCardText.innerText = "Finished reading";
     }
-  })
+  });
   buttons.appendChild(readButton);
 
   let deleteButton = document.createElement("button");
   deleteButton.innerText = "Delete";
   deleteButton.classList.add("delete");
   deleteButton.addEventListener("click", (e) => {
-    console.log(e);
-  })
+    let bookCard = e.target.parentElement.parentElement;
+    library[bookCard.getAttribute("book-id")] = null;
+    bookCard.remove();
+  });
   buttons.appendChild(deleteButton);
 
   return buttons;
