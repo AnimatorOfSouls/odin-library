@@ -104,9 +104,9 @@ button:hover {
 .container {
   width: 100%;
   display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 40ch));
   gap: 30px;
+  justify-content: center;
 }
 
 .book-card {

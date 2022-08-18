@@ -102,7 +102,7 @@ document.querySelector(".cancel").addEventListener("click", (e) => {
 
 
 
-let a = new Book("Wayfarers", "Becky Chambers", "250", true);
-
-addBookToLibrary(a);
-addBookToLibrary(a);
+let example1 = new Book("Wayfarers", "Becky Chambers", "250", true);
+let example2 = new Book("Mistborn", "Brandon Sanderson", "500", false);
+addBookToLibrary(example1);
+addBookToLibrary(example2);
