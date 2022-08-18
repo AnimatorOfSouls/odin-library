@@ -11,13 +11,42 @@ Book.prototype.info = function() {
   return this.title + " by " + this.author + ", " + this.pages + " pages, " + (this.read ? "read" : "not read yet");
 }
 
-function addBookToLibrary(book) {
-  library.push(book);
+function makeCardButtons() {
+  let buttons = document.createElement("div");
+  buttons.classList.add("buttons");
+
+  let readButton = document.createElement("button");
+  readButton.innerText = "Toggle Read";
+  readButton.classList.add("read");
+  readButton.addEventListener("click", (e) => {
+    let bookCard = e.target.parentElement.parentElement;
+    let bookCardText = bookCard.querySelector("p.read-status");
+    let book = library[bookCard.getAttribute("book-id")];
+    if (book.read) {
+      book.read = false;
+      bookCardText.innerText = "Not finished reading";
+    } else {
+      book.read = true;
+      bookCardText.innerText = "Finished reading";
+    }
+  })
+  buttons.appendChild(readButton);
+
+  let deleteButton = document.createElement("button");
+  deleteButton.innerText = "Delete";
+  deleteButton.classList.add("delete");
+  deleteButton.addEventListener("click", (e) => {
+    console.log(e);
+  })
+  buttons.appendChild(deleteButton);
+
+  return buttons;
 }
 
 function displayBook(book) {
   let card = document.createElement("div");
   card.classList.add("book-card");
+  card.setAttribute("book-id", library.length-1);
   let title = document.createElement("h2");
   title.innerText = book.title;
   card.appendChild(title);
@@ -28,11 +57,21 @@ function displayBook(book) {
   pages.innerText = "Length: " + book.pages + " pages";
   card.appendChild(pages);
   let read = document.createElement("p");
-  read.innerText = "Finished reading: " + book.read;
+  read.innerText = book.read ? "Finished reading" : "Not finished reading";
+  read.classList.add("read-status");
   card.appendChild(read);
+
+  card.appendChild(makeCardButtons());
   
   document.querySelector(".container").appendChild(card);
 }
+
+function addBookToLibrary(book) {
+  library.push(book);
+  displayBook(book);
+}
+
+
 
 document.querySelector(".add-book").addEventListener("click", (e) => {
   document.querySelector(".new-book").classList.remove("hidden");
@@ -42,16 +81,26 @@ document.querySelector(".submit-new-book").addEventListener("click", (e) => {
   let values = [];
   document.querySelectorAll(".normal-input").forEach((e) => {
     values.push(e.value);
+    e.value = "";
   });
-  values.push(document.querySelector("input[type=radio]:checked").value);
+  let radio = document.querySelector("input[type=radio]:checked");
+  values.push(radio.value);
+  radio.checked = false;
 
-  displayBook(new Book(values[0], values[1], values[2], values[3]));
+  let book = new Book(values[0], values[1], values[2], values[3]);
+  library.push(book);
+  addBookToLibrary(book);
   
   document.querySelector(".new-book").classList.add("hidden");
 });
 
-let a = new Book("Wayfarers", "Becky Chambers", "250", true);
-console.log(a.info())
+document.querySelector(".cancel").addEventListener("click", (e) => {
+  document.querySelector(".new-book").classList.add("hidden");
+});
 
-displayBook(a);
-displayBook(a);
+
+
+let a = new Book("Wayfarers", "Becky Chambers", "250", true);
+
+addBookToLibrary(a);
+addBookToLibrary(a);
